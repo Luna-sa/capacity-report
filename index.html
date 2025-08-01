@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Team Velocity & Capacity Report - Week 31</title>
+    <title>Team Velocity & Capacity Report - Week 32</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
         * {
@@ -302,148 +302,6 @@
             height: 350px;
         }
 
-        .capacity-planning {
-            background: white;
-            border-radius: 24px;
-            padding: 40px;
-            margin-bottom: 40px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .capacity-planning::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 6px;
-            background: linear-gradient(90deg, #FF3244 0%, #7AD2F9 100%);
-        }
-
-        .capacity-planning h2 {
-            font-size: 2em;
-            font-weight: 700;
-            color: #1e293b;
-            margin-bottom: 30px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .table-container {
-            overflow-x: auto;
-            margin-bottom: 30px;
-        }
-
-        .modern-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
-        }
-
-        .modern-table th {
-            background: #7DCEF4;
-            color: white;
-            padding: 20px;
-            text-align: left;
-            font-weight: 600;
-            font-size: 1.1em;
-            letter-spacing: 0.5px;
-        }
-
-        .modern-table td {
-            padding: 18px 20px;
-            border-bottom: 1px solid #e2e8f0;
-            font-size: 1em;
-            color: #374151;
-        }
-
-        .modern-table tr:hover {
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-        }
-
-        .modern-table tr:last-child td {
-            border-bottom: none;
-        }
-
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 16px;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 0.9em;
-        }
-
-        .status-badge.ok {
-            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
-            color: #166534;
-        }
-
-        .status-badge.not-ok {
-            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
-            color: #dc2626;
-        }
-
-        .insights-section {
-            background: linear-gradient(135deg, #f0fdff 0%, #e0f7fa 100%);
-            border-radius: 20px;
-            padding: 40px;
-            margin-bottom: 40px;
-            border: 2px solid rgba(122, 210, 249, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .insights-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, #7AD2F9 0%, #FF3244 100%);
-        }
-
-        .insights-section h2 {
-            font-size: 2em;
-            font-weight: 700;
-            color: #1e293b;
-            margin-bottom: 30px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .insight-item {
-            background: rgba(255, 255, 255, 0.8);
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 15px;
-            border-left: 4px solid #7DCEF4;
-            backdrop-filter: blur(10px);
-        }
-
-        .insight-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .highlight {
-            display: inline-block;
-            background: linear-gradient(135deg, #FF3244 0%, #7AD2F9 100%);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.9em;
-        }
-
         .risk-section {
             background: linear-gradient(135deg, #fff1f2 0%, #fef2f2 100%);
             border-radius: 20px;
@@ -474,13 +332,14 @@
             gap: 15px;
         }
 
-        .risk-item {
+        .risk-content {
             background: rgba(255, 255, 255, 0.9);
             padding: 25px;
             border-radius: 15px;
-            margin-bottom: 20px;
             border-left: 4px solid #FF3244;
             backdrop-filter: blur(10px);
+            font-size: 1.1em;
+            color: #374151;
         }
 
         .tasks-section {
@@ -511,6 +370,16 @@
             display: flex;
             align-items: center;
             gap: 15px;
+        }
+
+        .tasks-content {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 4px solid #7DCEF4;
+            backdrop-filter: blur(10px);
+            font-size: 1.1em;
+            color: #374151;
         }
 
         .gap-section {
@@ -600,7 +469,66 @@
             gap: 15px;
         }
 
-        .campaign-metrics {
+        .table-container {
+            overflow-x: auto;
+            margin-bottom: 30px;
+        }
+
+        .modern-table, .velocity-table, .capacity-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+        }
+
+        .modern-table th, .velocity-table th, .capacity-table th {
+            background: #7DCEF4;
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.1em;
+            letter-spacing: 0.5px;
+        }
+
+        .modern-table td, .velocity-table td, .capacity-table td {
+            padding: 18px 20px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 1em;
+            color: #374151;
+        }
+
+        .modern-table tr:hover, .velocity-table tr:hover, .capacity-table tr:hover {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        }
+
+        .modern-table tr:last-child td, .velocity-table tr:last-child td, .capacity-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        .status-badge.ok {
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            color: #166534;
+        }
+
+        .status-badge.not-ok {
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            color: #dc2626;
+        }
+
+        .insights-section {
             background: linear-gradient(135deg, #f0fdff 0%, #e0f7fa 100%);
             border-radius: 20px;
             padding: 40px;
@@ -610,7 +538,7 @@
             overflow: hidden;
         }
 
-        .campaign-metrics::before {
+        .insights-section::before {
             content: '';
             position: absolute;
             top: 0;
@@ -620,7 +548,7 @@
             background: linear-gradient(90deg, #7AD2F9 0%, #FF3244 100%);
         }
 
-        .campaign-metrics h2 {
+        .insights-section h2 {
             font-size: 2em;
             font-weight: 700;
             color: #1e293b;
@@ -630,31 +558,17 @@
             gap: 15px;
         }
 
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-        }
-
-        .metric-item {
-            text-align: center;
+        .insight-item {
+            background: rgba(255, 255, 255, 0.8);
             padding: 20px;
-            background: white;
             border-radius: 15px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            margin-bottom: 15px;
+            border-left: 4px solid #7DCEF4;
+            backdrop-filter: blur(10px);
         }
 
-        .metric-item .metric-value {
-            font-size: 2.5em;
-            font-weight: 800;
-            color: #FF3244;
-            margin-bottom: 5px;
-        }
-
-        .metric-item .metric-label {
-            font-size: 1em;
-            color: #64748b;
-            font-weight: 500;
+        .insight-item:last-child {
+            margin-bottom: 0;
         }
 
         .capacity-section {
@@ -687,40 +601,6 @@
             gap: 15px;
         }
 
-        .velocity-table, .capacity-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
-        }
-
-        .velocity-table th, .capacity-table th {
-            background: #7DCEF4;
-            color: white;
-            padding: 20px;
-            text-align: left;
-            font-weight: 600;
-            font-size: 1.1em;
-            letter-spacing: 0.5px;
-        }
-
-        .velocity-table td, .capacity-table td {
-            padding: 18px 20px;
-            border-bottom: 1px solid #e2e8f0;
-            font-size: 1em;
-            color: #374151;
-        }
-
-        .velocity-table tr:hover, .capacity-table tr:hover {
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-        }
-
-        .velocity-table tr:last-child td, .capacity-table tr:last-child td {
-            border-bottom: none;
-        }
-
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 2.5em;
@@ -750,52 +630,50 @@
         <div class="header">
             <h1>Team Velocity & Capacity Report</h1>
             <p class="subtitle">Sprint Performance Analysis & Strategic Insights</p>
-            <div class="date-badge">Week 31 • July 28, 2025</div>
+            <div class="date-badge">Week 32 • August 4, 2025</div>
         </div>
 
         <!-- Content Section -->
         <div class="content">
-            <!-- Executive Summary -->
-            <div class="executive-summary">
-                <h2>Executive Summary</h2>
-                <div class="summary-grid">
-                    <div class="summary-item">
-                        <div class="value">270</div>
-                        <div class="label">Current Velocity (SP)</div>
-                    </div>
-                    <div class="summary-item">
-                        <div class="value">192</div>
-                        <div class="label">Total Story Points</div>
-                    </div>
-                    <div class="summary-item">
-                        <div class="value">61</div>
-                        <div class="label">Total Deliverables</div>
-                    </div>
-                    <div class="summary-item">
-                        <div class="value">-31%</div>
-                        <div class="label">Velocity Change</div>
-                    </div>
+
+
+            <!-- KPI Cards -->
+            <div class="kpi-cards">
+                <div class="kpi-card">
+                    <h3>Team Velocity</h3>
+                    <div class="value">252</div>
+                    <div class="description">Story Points</div>
+                </div>
+                <div class="kpi-card">
+                    <h3>Current GAP</h3>
+                    <div class="value">32</div>
+                    <div class="description">Story Points</div>
+                </div>
+                <div class="kpi-card">
+                    <h3>Peak Velocity</h3>
+                    <div class="value">360</div>
+                    <div class="description">Week 27</div>
+                </div>
+                <div class="kpi-card">
+                    <h3>Capacity Utilization</h3>
+                    <div class="value">91%</div>
+                    <div class="description">Team Efficiency</div>
                 </div>
             </div>
 
-            <!-- Risk Analysis Section -->
+            <!-- Next Week's Risks Section -->
             <div class="risk-section">
                 <h2>🚨 Next Week's Risks</h2>
-                <div class="risk-item">
-                    <h3>Scope Uncertainty</h3>
-                    <p><strong>Risk:</strong> There is no final scope for next week. Team is expecting an additional <span class="highlight">+20 hours</span> more work beyond current capacity.</p>
-                    <p><strong>Impact:</strong> This uncertainty may lead to overcommitment and potential delivery delays.</p>
-                    <p><strong>Mitigation:</strong> Scope finalization required before sprint start to avoid capacity overflow.</p>
+                <div class="risk-content">
+                    No risks identified for next week.
                 </div>
             </div>
 
-            <!-- Tasks Status Section -->
+            <!-- Not Closed Tasks for Monday Section -->
             <div class="tasks-section">
                 <h2>📋 Not Closed Tasks for Monday</h2>
-                <div class="insight-item">
-                    <h3>Task Status: All Clear</h3>
-                    <p><strong>Status:</strong> No pending tasks for Monday deadline.</p>
-                    <p>All critical deliverables have been completed and closed successfully.</p>
+                <div class="tasks-content">
+                    No pending tasks for Monday.
                 </div>
             </div>
 
@@ -804,20 +682,20 @@
                 <h2>📊 GAP Analysis</h2>
                 <div class="gap-metrics">
                     <div class="gap-item">
-                        <div class="gap-value">21</div>
+                        <div class="gap-value">32</div>
                         <div class="gap-label">Current GAP (SP)</div>
                     </div>
                     <div class="gap-item">
-                        <div class="gap-value">34</div>
-                        <div class="gap-label">Forecast GAP Next Week (SP)</div>
-                    </div>
-                    <div class="gap-item">
-                        <div class="gap-value">2</div>
-                        <div class="gap-label">Current GAP (Days)</div>
+                        <div class="gap-value">13</div>
+                        <div class="gap-label">Forecasted GAP (SP)</div>
                     </div>
                     <div class="gap-item">
                         <div class="gap-value">3</div>
-                        <div class="gap-label">Forecast GAP Next Week (Days)</div>
+                        <div class="gap-label">Current GAP (Days)</div>
+                    </div>
+                    <div class="gap-item">
+                        <div class="gap-value">2</div>
+                        <div class="gap-label">Forecasted GAP (Days)</div>
                     </div>
                 </div>
             </div>
@@ -828,47 +706,24 @@
                 <div class="chart-container">
                     <canvas id="velocityChart"></canvas>
                 </div>
-                <div class="insights-section">
-                    <h2>💡 Velocity Chart Comments & Analysis</h2>
-                    <div class="insight-item">
-                        <h4>Dynamic Progression:</h4>
-                        <p><strong>Weeks 15–18:</strong> Initiated use of story points (SP) methodology.</p>
-                    </div>
-                    <div class="insight-item">
-                        <h4>Stability Period:</h4>
-                        <p><strong>Weeks 19–24:</strong> Maintained a stable velocity of average <span class="highlight">258 SP</span>.</p>
-                    </div>
-                    <div class="insight-item">
-                        <h4>Gap Accumulation:</h4>
-                        <p><strong>Week 25:</strong> Began accumulating gap due to increased complexity.</p>
-                    </div>
-                    <div class="insight-item">
-                        <h4>Complex Sales Configuration:</h4>
-                        <p><strong>Week 26-27:</strong> Faced significant workload from configuring complex sales systems.</p>
-                    </div>
-                    <div class="insight-item">
-                        <h4>Communication Focus:</h4>
-                        <p><strong>Week 28-29:</strong> More communication tasks handled, shorter working week impacted velocity.</p>
-                    </div>
-                </div>
             </div>
 
             <div class="analytics-grid">
                 <div class="analytics-card">
-                    <h3>📊 Estimated Efforts (SP)</h3>
+                    <h3>📊 Story Points Distribution</h3>
                     <div class="pie-chart-container">
                         <canvas id="storyPointsChart"></canvas>
                     </div>
                 </div>
                 <div class="analytics-card">
-                    <h3>⚡ Estimated Efforts (Hours)</h3>
+                    <h3>⚡ Estimated Efforts Breakdown</h3>
                     <div class="pie-chart-container">
                         <canvas id="effortsChart"></canvas>
                     </div>
                 </div>
             </div>
 
-            <!-- Weekly Velocity Table (Story Points Format) -->
+            <!-- Weekly Velocity Table (SP Format) -->
             <div class="velocity-table-section">
                 <h2>📈 Weekly Velocity vs Business Needs (Story Points)</h2>
                 <div class="table-container">
@@ -883,22 +738,22 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>29/07-04/08</td>
-                                <td>270 SP</td>
-                                <td>198 SP (±34 SP)</td>
-                                <td><span class="status-badge ok">Ok, but the scope is not final.</span></td>
-                            </tr>
-                            <tr>
                                 <td>05/08-11/08</td>
-                                <td>270 SP</td>
-                                <td>182 SP</td>
-                                <td><span class="status-badge ok">Ok.</span></td>
+                                <td>252 SP</td>
+                                <td>278 SP</td>
+                                <td><span class="status-badge not-ok">Not ok but will be covered with gap</span></td>
                             </tr>
                             <tr>
                                 <td>12/08-18/08</td>
-                                <td>270 SP</td>
-                                <td>167 SP</td>
-                                <td><span class="status-badge ok">Ok.</span></td>
+                                <td>252 SP</td>
+                                <td>178 SP</td>
+                                <td><span class="status-badge ok">Ok</span></td>
+                            </tr>
+                            <tr>
+                                <td>19/08-25/08</td>
+                                <td>252 SP</td>
+                                <td>196 SP</td>
+                                <td><span class="status-badge ok">Ok</span></td>
                             </tr>
                         </tbody>
                     </table>
@@ -907,7 +762,7 @@
 
             <!-- Team Capacity Analysis (Hours Format) -->
             <div class="capacity-section">
-                <h2>📊 Team Capacity Analysis (Hours Format)</h2>
+                <h2>📊 Team Capacity Analysis (Hours)</h2>
                 <div class="table-container">
                     <table class="capacity-table">
                         <thead>
@@ -920,48 +775,51 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>29/07-04/08</td>
-                                <td>224 h</td>
-                                <td>139 h (±20 hrs)</td>
-                                <td><span class="status-badge ok">Ok, but the scope is not final.</span></td>
-                            </tr>
-                            <tr>
                                 <td>05/08-11/08</td>
-                                <td>225 h</td>
-                                <td>161 h</td>
-                                <td><span class="status-badge ok">Ok.</span></td>
+                                <td>203 h</td>
+                                <td>209 h</td>
+                                <td><span class="status-badge not-ok">Not ok but will be covered with gap</span></td>
                             </tr>
                             <tr>
                                 <td>12/08-18/08</td>
-                                <td>249 h</td>
-                                <td>146 h</td>
-                                <td><span class="status-badge ok">Ok.</span></td>
+                                <td>230 h</td>
+                                <td>157 h</td>
+                                <td><span class="status-badge ok">Ok</span></td>
+                            </tr>
+                            <tr>
+                                <td>19/08-25/08</td>
+                                <td>255 h</td>
+                                <td>175 h</td>
+                                <td><span class="status-badge ok">Ok</span></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- Campaign Metrics Section -->
-            <div class="campaign-metrics">
-                <h2>🎯 Campaign & Communications Metrics</h2>
-                <div class="metrics-grid">
-                    <div class="metric-item">
-                        <div class="metric-value">13</div>
-                        <div class="metric-label">Campaign Tools Made Last Week</div>
-                    </div>
-                    <div class="metric-item">
-                        <div class="metric-value">48</div>
-                        <div class="metric-label">Communications Made Last Week</div>
-                    </div>
-                    <div class="metric-item">
-                        <div class="metric-value">61</div>
-                        <div class="metric-label">Total Deliverables</div>
-                    </div>
-                    <div class="metric-item">
-                        <div class="metric-value">79%</div>
-                        <div class="metric-label">Communications Share</div>
-                    </div>
+            <!-- Velocity Chart Comments & Insights -->
+            <div class="insights-section">
+                <h2>💡 Velocity Chart Analysis</h2>
+                <div class="insight-item">
+                    <strong>Dynamic Evolution:</strong>
+                </div>
+                <div class="insight-item">
+                    <strong>Weeks 15–18:</strong> Initiated use of story points (SP). Initial adoption phase showing variable performance.
+                </div>
+                <div class="insight-item">
+                    <strong>Weeks 19–24:</strong> Maintained a stable velocity of avg 258 SP. Consistent team performance achieved.
+                </div>
+                <div class="insight-item">
+                    <strong>Week 25:</strong> Began accumulating gap. First signs of capacity challenges emerging.
+                </div>
+                <div class="insight-item">
+                    <strong>Week 26-27:</strong> Faced significant workload from configuring complex sales. Peak velocity of 360 SP achieved in Week 27.
+                </div>
+                <div class="insight-item">
+                    <strong>Week 28-29:</strong> More communication tasks, short week. Velocity normalized after peak period.
+                </div>
+                <div class="insight-item">
+                    <strong>Week 30-31:</strong> Gaining bigger gap. Accumulated backlog continues to grow.
                 </div>
             </div>
         </div>
@@ -978,17 +836,17 @@
             ];
             
             try {
-                // VELOCITY CHART
+                // VELOCITY CHART - Updated with complete data from PDF
                 const velocityCtx = document.getElementById('velocityChart');
                 if (velocityCtx) {
                     console.log('🎯 Initializing Velocity Chart');
                     new Chart(velocityCtx.getContext('2d'), {
                         type: 'line',
                         data: {
-                            labels: ["Week 21","Week 22","Week 23","Week 24","Week 25","Week 26","Week 27","Week 28"],
+                            labels: ["Week 15","Week 16","Week 17","Week 18","Week 19","Week 20","Week 21","Week 22","Week 23","Week 24","Week 25","Week 26","Week 27","Week 28","Week 29","Week 30","Week 31","Week 32","Week 33","Week 34","Week 35"],
                             datasets: [{
                                 label: 'Actual Velocity',
-                                data: [245,255,250,265,285,340,360,247],
+                                data: [219,199,216,157,280,263,244,254,249,260,285,339,360,270,220,232,245,null,null,null,null],
                                 borderColor: '#FF3244',
                                 backgroundColor: 'rgba(255, 50, 68, 0.1)',
                                 borderWidth: 4,
@@ -1001,7 +859,7 @@
                                 tension: 0.4
                             }, {
                                 label: 'Predicted Trajectory',
-                                data: [240,245,250,255,260,275,290,332],
+                                data: [220,225,230,235,240,242,244,246,248,250,252,255,257,260,262,265,267,275,290,310,328],
                                 borderColor: '#7AD2F9',
                                 backgroundColor: 'rgba(122, 210, 249, 0.1)',
                                 borderWidth: 3,
@@ -1049,8 +907,8 @@
                             scales: {
                                 y: {
                                     beginAtZero: false,
-                                    min: 200,
-                                    max: 400,
+                                    min: 120,
+                                    max: 380,
                                     title: {
                                         display: true,
                                         text: 'Story Points',
@@ -1088,9 +946,9 @@
                     new Chart(storyPointsCtx.getContext('2d'), {
                         type: 'doughnut',
                         data: {
-                            labels: ["Booster/PU Store","Campaign tool","Communications","Credit Store/SOS","Other","Personal chases","Quest Campaign","Seasonal/Event Protocols","Style UI"],
+                            labels: ["Booster/PU Store","Campaign tool","Communications","Credit Store/SOS","Golden Spin (Daily Spin)","Other","Personal chases","Quest Campaign","Seasonal/Event Protocols","Sink Machine","Style UI"],
                             datasets: [{
-                                data: [8,73,55,11,10,9,16,2,8],
+                                data: [4,95,73,26,2,14,3,21,10,1,29],
                                 backgroundColor: chartColors,
                                 borderWidth: 3,
                                 borderColor: '#ffffff',
@@ -1146,9 +1004,9 @@
                     new Chart(effortsCtx.getContext('2d'), {
                         type: 'doughnut',
                         data: {
-                            labels: ["Booster/PU Store","Campaign tool","Chef","Communications","Credit Store/SOS","Other","Personal chases","Quest Campaign","Seasonal/Event Protocols","Style UI"],
+                            labels: ["Booster/PU Store","Campaign tool","Communications","Credit Store/SOS","Golden Spin (Daily Spin)","Other","Personal chases","Quest Campaign","Seasonal/Event Protocols","Sink Machine","Style UI"],
                             datasets: [{
-                                data: [12,34,8,45,8,12,4.5,15,2,5],
+                                data: [6,51.5,63,21,1,11,1.5,21,6,1,25.5],
                                 backgroundColor: chartColors,
                                 borderWidth: 3,
                                 borderColor: '#ffffff',
