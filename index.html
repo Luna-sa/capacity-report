@@ -3,593 +3,564 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MMOps Team Velocity & Capacity Report - Week 33</title>
+    <title>Team Velocity & Capacity Report - Week 33</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
     <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: linear-gradient(135deg, #FF3244 0%, #7AD2F9 100%);
-    min-height: 100vh;
-    padding: 20px;
-    position: relative;
-}
-
-body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: 
-        radial-gradient(circle at 20% 20%, rgba(255, 50, 68, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(122, 210, 249, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 40% 70%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: -1;
-}
-
-.container {
-    max-width: 1400px;
-    margin: 0 auto;
-    background: rgba(255, 255, 255, 0.98);
-    border-radius: 24px;
-    box-shadow: 
-        0 32px 64px rgba(0, 0, 0, 0.12),
-        0 0 0 1px rgba(255, 255, 255, 0.3);
-    overflow: hidden;
-    backdrop-filter: blur(20px);
-}
-
-.header {
-    background: #7DCEF4;
-    color: white;
-    padding: 60px 40px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-}
-
-.header::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: 
-        radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%),
-        linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.05) 50%, transparent 70%);
-    animation: shimmer 8s ease-in-out infinite;
-}
-
-@keyframes shimmer {
-    0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
-    50% { transform: translate(-50%, -50%) rotate(180deg); }
-}
-
-.header h1 {
-    font-size: 3.5em;
-    font-weight: 800;
-    margin-bottom: 15px;
-    position: relative;
-    z-index: 1;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.header .subtitle {
-    font-size: 1.4em;
-    opacity: 0.95;
-    position: relative;
-    z-index: 1;
-    font-weight: 300;
-    letter-spacing: 0.5px;
-    color: #FF3244;
-}
-
-.header .date-badge {
-    display: inline-block;
-    background: rgba(255, 255, 255, 0.2);
-    padding: 8px 20px;
-    border-radius: 50px;
-    margin-top: 15px;
-    font-size: 0.9em;
-    font-weight: 500;
-    backdrop-filter: blur(10px);
-}
-
-.content {
-    padding: 50px 40px;
-}
-
-.kpi-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 25px;
-    margin-bottom: 50px;
-}
-
-.kpi-card {
-    background: white;
-    padding: 35px;
-    border-radius: 20px;
-    text-align: center;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-.kpi-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 6px;
-    background: linear-gradient(90deg, #FF3244 0%, #7AD2F9 100%);
-}
-
-.kpi-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
-}
-
-.kpi-card h3 {
-    font-size: 1.3em;
-    color: #374151;
-    margin-bottom: 15px;
-    font-weight: 600;
-}
-
-.kpi-card .value {
-    font-size: 3.5em;
-    font-weight: 900;
-    margin-bottom: 10px;
-    background: linear-gradient(135deg, #FF3244 0%, #7AD2F9 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.kpi-card .description {
-    color: #64748b;
-    font-size: 1.1em;
-    font-weight: 500;
-}
-
-.chart-section {
-    background: white;
-    border-radius: 24px;
-    padding: 40px;
-    margin-bottom: 40px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-    position: relative;
-    overflow: hidden;
-}
-
-.chart-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 6px;
-    background: linear-gradient(90deg, #FF3244 0%, #7AD2F9 100%);
-}
-
-.chart-section h2 {
-    font-size: 2em;
-    font-weight: 700;
-    color: #1e293b;
-    margin-bottom: 30px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.chart-container {
-    position: relative;
-    height: 450px;
-    margin-bottom: 20px;
-}
-
-.analytics-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 30px;
-    margin-bottom: 40px;
-}
-
-.analytics-card {
-    background: white;
-    border-radius: 20px;
-    padding: 30px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-    position: relative;
-    overflow: hidden;
-}
-
-.analytics-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    background: linear-gradient(90deg, #FF3244 0%, #7AD2F9 100%);
-}
-
-.analytics-card h3 {
-    font-size: 1.6em;
-    font-weight: 600;
-    color: #1e293b;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.pie-chart-container {
-    position: relative;
-    height: 350px;
-}
-
-.risk-section {
-    background: linear-gradient(135deg, #fff1f2 0%, #fef2f2 100%);
-    border-radius: 20px;
-    padding: 40px;
-    margin-bottom: 40px;
-    border: 2px solid rgba(255, 50, 68, 0.2);
-    position: relative;
-    overflow: hidden;
-}
-
-.risk-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    background: linear-gradient(90deg, #FF3244 0%, #7AD2F9 100%);
-}
-
-.risk-section h2 {
-    font-size: 2em;
-    font-weight: 700;
-    color: #1e293b;
-    margin-bottom: 30px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.risk-content {
-    background: rgba(255, 255, 255, 0.9);
-    padding: 25px;
-    border-radius: 15px;
-    border-left: 4px solid #FF3244;
-    backdrop-filter: blur(10px);
-    font-size: 1.1em;
-    color: #374151;
-}
-
-.tasks-section {
-    background: linear-gradient(135deg, #f0fdff 0%, #e0f7fa 100%);
-    border-radius: 20px;
-    padding: 40px;
-    margin-bottom: 40px;
-    border: 2px solid rgba(122, 210, 249, 0.3);
-    position: relative;
-    overflow: hidden;
-}
-
-.tasks-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    background: linear-gradient(90deg, #7AD2F9 0%, #FF3244 100%);
-}
-
-.tasks-section h2 {
-    font-size: 2em;
-    font-weight: 700;
-    color: #1e293b;
-    margin-bottom: 30px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.tasks-content {
-    background: rgba(255, 255, 255, 0.8);
-    padding: 25px;
-    border-radius: 15px;
-    border-left: 4px solid #7DCEF4;
-    backdrop-filter: blur(10px);
-    font-size: 1.1em;
-    color: #374151;
-}
-
-.task-item {
-    margin-bottom: 15px;
-    padding: 12px 0;
-    border-bottom: 1px solid rgba(122, 210, 249, 0.2);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.task-item:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
-}
-
-.task-link {
-    color: #7AD2F9;
-    text-decoration: none;
-    font-weight: 600;
-    padding: 4px 8px;
-    background: rgba(122, 210, 249, 0.1);
-    border-radius: 6px;
-    transition: all 0.3s ease;
-    font-size: 0.9em;
-}
-
-.task-link:hover {
-    background: rgba(122, 210, 249, 0.2);
-    color: #FF3244;
-    text-decoration: underline;
-}
-
-.gap-section {
-    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-    border-radius: 20px;
-    padding: 40px;
-    margin-bottom: 40px;
-    border: 2px solid rgba(122, 210, 249, 0.2);
-    position: relative;
-    overflow: hidden;
-}
-
-.gap-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    background: linear-gradient(90deg, #FF3244 0%, #7AD2F9 100%);
-}
-
-.gap-section h2 {
-    font-size: 2em;
-    font-weight: 700;
-    color: #1e293b;
-    margin-bottom: 30px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.gap-metrics {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-}
-
-.gap-item {
-    text-align: center;
-    padding: 20px;
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-}
-
-.gap-item .gap-value {
-    font-size: 2.5em;
-    font-weight: 800;
-    color: #FF3244;
-    margin-bottom: 5px;
-}
-
-.gap-item .gap-label {
-    font-size: 1em;
-    color: #64748b;
-    font-weight: 500;
-}
-
-.velocity-table-section {
-    background: white;
-    border-radius: 24px;
-    padding: 40px;
-    margin-bottom: 40px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-    position: relative;
-    overflow: hidden;
-}
-
-.velocity-table-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 6px;
-    background: linear-gradient(90deg, #FF3244 0%, #7AD2F9 100%);
-}
-
-.velocity-table-section h2 {
-    font-size: 2em;
-    font-weight: 700;
-    color: #1e293b;
-    margin-bottom: 30px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.table-container {
-    overflow-x: auto;
-    margin-bottom: 30px;
-}
-
-.modern-table, .velocity-table, .capacity-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: white;
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
-}
-
-.modern-table th, .velocity-table th, .capacity-table th {
-    background: #7DCEF4;
-    color: white;
-    padding: 20px;
-    text-align: left;
-    font-weight: 600;
-    font-size: 1.1em;
-    letter-spacing: 0.5px;
-}
-
-.modern-table td, .velocity-table td, .capacity-table td {
-    padding: 18px 20px;
-    border-bottom: 1px solid #e2e8f0;
-    font-size: 1em;
-    color: #374151;
-}
-
-.modern-table tr:hover, .velocity-table tr:hover, .capacity-table tr:hover {
-    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-}
-
-.modern-table tr:last-child td, .velocity-table tr:last-child td, .capacity-table tr:last-child td {
-    border-bottom: none;
-}
-
-.status-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 16px;
-    border-radius: 50px;
-    font-weight: 600;
-    font-size: 0.9em;
-}
-
-.status-badge.ok {
-    background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
-    color: #166534;
-}
-
-.status-badge.not-ok {
-    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
-    color: #dc2626;
-}
-
-.insights-section {
-    background: linear-gradient(135deg, #f0fdff 0%, #e0f7fa 100%);
-    border-radius: 20px;
-    padding: 40px;
-    margin-bottom: 40px;
-    border: 2px solid rgba(122, 210, 249, 0.3);
-    position: relative;
-    overflow: hidden;
-}
-
-.insights-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    background: linear-gradient(90deg, #7AD2F9 0%, #FF3244 100%);
-}
-
-.insights-section h2 {
-    font-size: 2em;
-    font-weight: 700;
-    color: #1e293b;
-    margin-bottom: 30px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.insight-item {
-    background: rgba(255, 255, 255, 0.8);
-    padding: 20px;
-    border-radius: 15px;
-    margin-bottom: 15px;
-    border-left: 4px solid #7DCEF4;
-    backdrop-filter: blur(10px);
-}
-
-.insight-item:last-child {
-    margin-bottom: 0;
-}
-
-.capacity-section {
-    background: white;
-    border-radius: 24px;
-    padding: 40px;
-    margin-bottom: 40px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-    position: relative;
-    overflow: hidden;
-}
-
-.capacity-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 6px;
-    background: linear-gradient(90deg, #FF3244 0%, #7AD2F9 100%);
-}
-
-.capacity-section h2 {
-    font-size: 2em;
-    font-weight: 700;
-    color: #1e293b;
-    margin-bottom: 30px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-@media (max-width: 768px) {
-    .header h1 {
-        font-size: 2.5em;
-    }
-    
-    .kpi-cards {
-        grid-template-columns: 1fr;
-    }
-    
-    .analytics-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .content {
-        padding: 20px;
-    }
-    
-    body {
-        padding: 10px;
-    }
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #FF3244 0%, #7AD2F9 100%);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(255, 50, 68, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(122, 210, 249, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 70%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 24px;
+            box-shadow: 
+                0 32px 64px rgba(0, 0, 0, 0.12),
+                0 0 0 1px rgba(255, 255, 255, 0.3);
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+        }
+
+        .header {
+            background: #7DCEF4;
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%),
+                linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.05) 50%, transparent 70%);
+            animation: shimmer 8s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
+            50% { transform: translate(-50%, -50%) rotate(180deg); }
+        }
+
+        .header h1 {
+            font-size: 3.5em;
+            font-weight: 800;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header .subtitle {
+            font-size: 1.4em;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+            color: #FF3244;
+        }
+
+        .header .date-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 20px;
+            border-radius: 50px;
+            margin-top: 15px;
+            font-size: 0.9em;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+        }
+
+        .content {
+            padding: 50px 40px;
+        }
+
+        .kpi-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .kpi-card {
+            background: white;
+            padding: 35px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, #FF3244 0%, #7AD2F9 100%);
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
+        }
+
+        .kpi-card h3 {
+            font-size: 1.3em;
+            color: #374151;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .kpi-card .value {
+            font-size: 3.5em;
+            font-weight: 900;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #FF3244 0%, #7AD2F9 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .kpi-card .description {
+            color: #64748b;
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+
+        .chart-section {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, #FF3244 0%, #7AD2F9 100%);
+        }
+
+        .chart-section h2 {
+            font-size: 2em;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 450px;
+            margin-bottom: 20px;
+        }
+
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .analytics-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .analytics-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #FF3244 0%, #7AD2F9 100%);
+        }
+
+        .analytics-card h3 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .pie-chart-container {
+            position: relative;
+            height: 350px;
+        }
+
+        .risk-section {
+            background: linear-gradient(135deg, #fff1f2 0%, #fef2f2 100%);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            border: 2px solid rgba(255, 50, 68, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .risk-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #FF3244 0%, #7AD2F9 100%);
+        }
+
+        .risk-section h2 {
+            font-size: 2em;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .risk-content {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 4px solid #FF3244;
+            backdrop-filter: blur(10px);
+            font-size: 1.1em;
+            color: #374151;
+        }
+
+        .tasks-section {
+            background: linear-gradient(135deg, #f0fdff 0%, #e0f7fa 100%);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            border: 2px solid rgba(122, 210, 249, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tasks-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #7AD2F9 0%, #FF3244 100%);
+        }
+
+        .tasks-section h2 {
+            font-size: 2em;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .tasks-content {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 4px solid #7DCEF4;
+            backdrop-filter: blur(10px);
+            font-size: 1.1em;
+            color: #374151;
+        }
+
+        .gap-section {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            border: 2px solid rgba(122, 210, 249, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gap-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #FF3244 0%, #7AD2F9 100%);
+        }
+
+        .gap-section h2 {
+            font-size: 2em;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .gap-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .gap-item {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .gap-item .gap-value {
+            font-size: 2.5em;
+            font-weight: 800;
+            color: #FF3244;
+            margin-bottom: 5px;
+        }
+
+        .gap-item .gap-label {
+            font-size: 1em;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .velocity-table-section {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .velocity-table-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, #FF3244 0%, #7AD2F9 100%);
+        }
+
+        .velocity-table-section h2 {
+            font-size: 2em;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin-bottom: 30px;
+        }
+
+        .modern-table, .velocity-table, .capacity-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+        }
+
+        .modern-table th, .velocity-table th, .capacity-table th {
+            background: #7DCEF4;
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.1em;
+            letter-spacing: 0.5px;
+        }
+
+        .modern-table td, .velocity-table td, .capacity-table td {
+            padding: 18px 20px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 1em;
+            color: #374151;
+        }
+
+        .modern-table tr:hover, .velocity-table tr:hover, .capacity-table tr:hover {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        }
+
+        .modern-table tr:last-child td, .velocity-table tr:last-child td, .capacity-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        .status-badge.ok {
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            color: #166534;
+        }
+
+        .status-badge.not-ok {
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            color: #dc2626;
+        }
+
+        .insights-section {
+            background: linear-gradient(135deg, #f0fdff 0%, #e0f7fa 100%);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            border: 2px solid rgba(122, 210, 249, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .insights-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #7AD2F9 0%, #FF3244 100%);
+        }
+
+        .insights-section h2 {
+            font-size: 2em;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .insight-item {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #7DCEF4;
+            backdrop-filter: blur(10px);
+        }
+
+        .insight-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .capacity-section {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .capacity-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, #FF3244 0%, #7AD2F9 100%);
+        }
+
+        .capacity-section h2 {
+            font-size: 2em;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5em;
+            }
+            
+            .kpi-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .analytics-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            body {
+                padding: 10px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -598,7 +569,7 @@ body::before {
         <div class="header">
             <h1>Team Velocity & Capacity Report</h1>
             <p class="subtitle">Sprint Performance Analysis & Strategic Insights</p>
-            <div class="date-badge">Week 33 • August 11, 2025</div>
+            <div class="date-badge">Week 33 • August 18, 2025</div>
         </div>
 
         <!-- Content Section -->
@@ -606,14 +577,14 @@ body::before {
             <!-- KPI Cards -->
             <div class="kpi-cards">
                 <div class="kpi-card">
-                    <h3>Current Velocity</h3>
-                    <div class="value">252</div>
+                    <h3>Team Velocity</h3>
+                    <div class="value">270</div>
                     <div class="description">Story Points</div>
                 </div>
                 <div class="kpi-card">
                     <h3>Current GAP</h3>
-                    <div class="value">10</div>
-                    <div class="description">Story Points</div>
+                    <div class="value">1</div>
+                    <div class="description">Day</div>
                 </div>
                 <div class="kpi-card">
                     <h3>Peak Velocity</h3>
@@ -622,7 +593,7 @@ body::before {
                 </div>
                 <div class="kpi-card">
                     <h3>Capacity Utilization</h3>
-                    <div class="value">95</div>
+                    <div class="value">88%</div>
                     <div class="description">Team Efficiency</div>
                 </div>
             </div>
@@ -631,9 +602,9 @@ body::before {
             <div class="risk-section">
                 <h2>🚨 Next Week's Risks</h2>
                 <div class="risk-content">
-                    <strong>Status:</strong> No identified risks for next week.
-                    <br><br>
-                    The team currently shows stable velocity and capacity management with no anticipated scope or capacity issues.
+                    <p><strong>Critical Risk Identified:</strong> The planned scope for next week exceeds the team's current capacity.</p>
+                    <p>Our available gap is minimal, as much of this week's effort was spent on unplanned requests.</p>
+                    <p>Additionally, the short workweek left us with no opportunity to build up any more gap days.</p>
                 </div>
             </div>
 
@@ -641,23 +612,7 @@ body::before {
             <div class="tasks-section">
                 <h2>📋 Not Closed Tasks for Monday</h2>
                 <div class="tasks-content">
-                    <p><strong>Status:</strong> Yes, will be tested on Sunday</p>
-                    <div class="task-item">
-                        <strong>08/11</strong> - Hidden Treats - Fairytails - Out Of
-                        <a href="https://jira.playtika.com/browse/MARKNEW-92257" target="_blank" class="task-link">MARKNEW-92257</a>
-                    </div>
-                    <div class="task-item">
-                        <strong>08/11</strong> - Hidden Treats - Fairytails - Email PRAS
-                        <a href="https://jira.playtika.com/browse/MARKNEW-92808" target="_blank" class="task-link">MARKNEW-92808</a>
-                    </div>
-                    <div class="task-item">
-                        <strong>8/11</strong> - Task in a mask promo - popup
-                        <a href="https://jira.playtika.com/browse/MARKNEW-93010" target="_blank" class="task-link">MARKNEW-93010</a>
-                    </div>
-                    <div class="task-item">
-                        <strong>8/11</strong> - Rolling PO - 20% lift - Configure CT
-                        <a href="https://jira.playtika.com/browse/MARKNEW-92821" target="_blank" class="task-link">MARKNEW-92821</a>
-                    </div>
+                    <p><em>No specific tasks listed in the report for Monday completion.</em></p>
                 </div>
             </div>
 
@@ -670,15 +625,15 @@ body::before {
                         <div class="gap-label">Current GAP (SP)</div>
                     </div>
                     <div class="gap-item">
-                        <div class="gap-value">10</div>
+                        <div class="gap-value">0</div>
                         <div class="gap-label">Forecasted GAP (SP)</div>
                     </div>
                     <div class="gap-item">
-                        <div class="gap-value">2</div>
+                        <div class="gap-value">1</div>
                         <div class="gap-label">Current GAP (Days)</div>
                     </div>
                     <div class="gap-item">
-                        <div class="gap-value">2</div>
+                        <div class="gap-value">0</div>
                         <div class="gap-label">Forecasted GAP (Days)</div>
                     </div>
                 </div>
@@ -694,13 +649,13 @@ body::before {
 
             <div class="analytics-grid">
                 <div class="analytics-card">
-                    <h3>📊 Estimated Efforts (Story Points)</h3>
+                    <h3>📊 Story Points Distribution</h3>
                     <div class="pie-chart-container">
                         <canvas id="storyPointsChart"></canvas>
                     </div>
                 </div>
                 <div class="analytics-card">
-                    <h3>⚡ Estimated Efforts (Hours)</h3>
+                    <h3>⚡ Estimated Efforts Breakdown</h3>
                     <div class="pie-chart-container">
                         <canvas id="effortsChart"></canvas>
                     </div>
@@ -722,22 +677,22 @@ body::before {
                         </thead>
                         <tbody>
                             <tr>
-                                <td>12/08-18/08</td>
-                                <td>252 SP</td>
-                                <td>253 SP</td>
-                                <td><span class="status-badge ok">Ok</span></td>
-                            </tr>
-                            <tr>
                                 <td>19/08-25/08</td>
-                                <td>252 SP</td>
-                                <td>199 SP</td>
-                                <td><span class="status-badge ok">Ok</span></td>
+                                <td>270 SP</td>
+                                <td>355 SP</td>
+                                <td><span class="status-badge not-ok">Not ok, there are risks because of big scope.</span></td>
                             </tr>
                             <tr>
                                 <td>26/08-01/09</td>
-                                <td>252 SP</td>
-                                <td>195 SP</td>
-                                <td><span class="status-badge ok">Ok</span></td>
+                                <td>270 SP</td>
+                                <td>201 SP</td>
+                                <td><span class="status-badge not-ok">Short week, will need to mitigate the risks.</span></td>
+                            </tr>
+                            <tr>
+                                <td>02/09-08/09</td>
+                                <td>270 SP</td>
+                                <td>159 SP</td>
+                                <td><span class="status-badge ok">Ok.</span></td>
                             </tr>
                         </tbody>
                     </table>
@@ -759,22 +714,22 @@ body::before {
                         </thead>
                         <tbody>
                             <tr>
-                                <td>12/08-18/08</td>
-                                <td>196 h</td>
-                                <td>181 h</td>
-                                <td><span class="status-badge ok">Ok</span></td>
-                            </tr>
-                            <tr>
                                 <td>19/08-25/08</td>
-                                <td>209 h</td>
-                                <td>178 h</td>
-                                <td><span class="status-badge ok">Ok</span></td>
+                                <td>219 h</td>
+                                <td>248 h</td>
+                                <td><span class="status-badge not-ok">Not ok, there are risks because of big scope.</span></td>
                             </tr>
                             <tr>
                                 <td>26/08-01/09</td>
-                                <td>206 h</td>
-                                <td>174 h</td>
-                                <td><span class="status-badge ok">Ok</span></td>
+                                <td>162 h</td>
+                                <td>180 h</td>
+                                <td><span class="status-badge not-ok">Short week, will need to mitigate the risks.</span></td>
+                            </tr>
+                            <tr>
+                                <td>02/09-08/09</td>
+                                <td>214 h</td>
+                                <td>138 h</td>
+                                <td><span class="status-badge ok">Ok.</span></td>
                             </tr>
                         </tbody>
                     </table>
@@ -785,16 +740,16 @@ body::before {
             <div class="insights-section">
                 <h2>💡 Velocity Chart Analysis</h2>
                 <div class="insight-item">
-                    <strong>Historical Performance:</strong> The team has shown varying velocity with significant peaks (360 SP in week 27) and stable periods around 252 SP. The data shows natural fluctuations typical for agile teams.
+                    <h4>Velocity Trend</h4>
+                    <p>The team's velocity shows significant variation over the period from Week 15 to Week 33. Notable patterns include a low of 155 SP in Week 18, a peak of 360 SP in Week 27, and current stabilization around 270 SP in Week 33. The predicted average velocity line maintains around 250 SP.</p>
                 </div>
                 <div class="insight-item">
-                    <strong>Capacity vs Demand:</strong> Current team capacity consistently meets or exceeds business needs, with the team showing healthy capacity margins in the hours-based analysis.
+                    <h4>Capacity Constraints</h4>
+                    <p>Both SP and hours-based analysis confirm that the upcoming week (19/08-25/08) presents capacity challenges with business needs exceeding current team velocity.</p>
                 </div>
                 <div class="insight-item">
-                    <strong>Gap Management:</strong> The identified 10 SP gap is manageable and represents only 4% of total velocity. The 2-day equivalent gap is within acceptable tolerance levels.
-                </div>
-                <div class="insight-item">
-                    <strong>Forecast:</strong> Predictive modeling suggests velocity stabilization around 252 SP with potential growth to 328 SP by week 35, indicating positive trajectory and team maturity.
+                    <h4>Risk Mitigation</h4>
+                    <p>The short workweek in the period 26/08-01/09 requires risk mitigation strategies despite lower business needs, as available capacity is also reduced.</p>
                 </div>
             </div>
         </div>
@@ -811,7 +766,7 @@ body::before {
             ];
             
             try {
-                // VELOCITY CHART - Updated with real data from the graph
+                // VELOCITY CHART
                 const velocityCtx = document.getElementById('velocityChart');
                 if (velocityCtx) {
                     console.log('🎯 Initializing Velocity Chart');
@@ -821,7 +776,7 @@ body::before {
                             labels: ["Week 15","Week 16","Week 17","Week 18","Week 19","Week 20","Week 21","Week 22","Week 23","Week 24","Week 25","Week 26","Week 27","Week 28","Week 29","Week 30","Week 31","Week 32","Week 33","Week 34","Week 35"],
                             datasets: [{
                                 label: 'Actual Velocity',
-                                data: [220,200,220,160,280,265,245,255,250,265,285,340,360,270,220,235,245,255,252,null,null],
+                                data: [220,200,215,155,280,265,250,255,250,265,285,340,360,265,220,235,245,255,270,null,null],
                                 borderColor: '#FF3244',
                                 backgroundColor: 'rgba(255, 50, 68, 0.1)',
                                 borderWidth: 4,
@@ -834,18 +789,32 @@ body::before {
                                 tension: 0.4,
                                 spanGaps: false
                             }, {
-                                label: 'Predicted Trajectory',
-                                data: [210,215,220,225,230,235,240,245,250,255,260,265,270,275,280,285,290,295,300,315,328],
-                                borderColor: '#7AD2F9',
-                                backgroundColor: 'rgba(122, 210, 249, 0.1)',
+                                label: 'Predicted (avg)',
+                                data: [210,215,220,225,230,235,240,245,250,250,250,250,250,250,250,250,250,250,250,280,329],
+                                borderColor: '#9CA3AF',
+                                backgroundColor: 'rgba(156, 163, 175, 0.1)',
                                 borderWidth: 3,
                                 borderDash: [8, 4],
-                                pointRadius: 6,
-                                pointBackgroundColor: '#7AD2F9',
+                                pointRadius: 4,
+                                pointBackgroundColor: '#9CA3AF',
                                 pointBorderColor: '#ffffff',
                                 pointBorderWidth: 2,
                                 fill: false,
                                 tension: 0.4
+                            }, {
+                                label: 'Predicted 35: 329 SP',
+                                data: [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,329],
+                                borderColor: '#F59E0B',
+                                backgroundColor: '#F59E0B',
+                                borderWidth: 0,
+                                pointRadius: 15,
+                                pointHoverRadius: 18,
+                                pointBackgroundColor: '#F59E0B',
+                                pointBorderColor: '#ffffff',
+                                pointBorderWidth: 4,
+                                fill: false,
+                                pointStyle: 'crossRot',
+                                showLine: false
                             }]
                         },
                         options: {
@@ -924,7 +893,7 @@ body::before {
                         data: {
                             labels: ["Booster/PU Store","Campaign tool","Communications","Credit Store/SOS","Golden Spin (Daily Spin)","Other","Personal chases","Quest Campaign","Seasonal/Event Protocols","Sink Machine","Style UI"],
                             datasets: [{
-                                data: [8,105,69,8,1,9,6,28,4,1,14],
+                                data: [8,125,87,11,1,9,6,26,13,1,14],
                                 backgroundColor: chartColors,
                                 borderWidth: 3,
                                 borderColor: '#ffffff',
@@ -980,9 +949,9 @@ body::before {
                     new Chart(effortsCtx.getContext('2d'), {
                         type: 'doughnut',
                         data: {
-                            labels: ["Booster/PU Store","Campaign tool","Communications","Credit Store/SOS","Golden Spin (Daily Spin)","Other","Personal chases","Quest Campaign","Seasonal/Event Protocols","Sink Machine","Style UI"],
+                            labels: ["Booster/PU Store","Campaign tool","Communications","Credit Store/SOS","Golden Spin (Daily Spin)","Other","Personal chases","Quest Campaign","Seasonal/Event Protocols","Sink Machine","Style UI","Teams"],
                             datasets: [{
-                                data: [11,50,58.5,8,0.5,14.5,3,18,4,1,12],
+                                data: [11,67,75,12,0.5,9.5,3,19,11,1,12,1],
                                 backgroundColor: chartColors,
                                 borderWidth: 3,
                                 borderColor: '#ffffff',
